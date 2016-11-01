@@ -4,7 +4,7 @@ class Mars {
   float xVel = 1;
   
   Mars() {
-    x = 3*(width);
+    x = 4*(width);
     y = height/2;
   }
   
@@ -20,8 +20,8 @@ class Mars {
   
   void render() {
     pushStyle();
-    fill(255,0,0);
-    ellipse(x, y, radius * 2, radius * 2);
+    imageMode(CENTER);
+    image(mars, x, y);
     popStyle();
   }
 }

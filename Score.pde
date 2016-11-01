@@ -1,9 +1,10 @@
 class Score {
 
   int points;
-  String good = "Your coin count: not bad!";
-  String bad = "You didn't get many coins... maybe next time.";
-  String great = "Great job! You accumulated lots of coins!";
+  int dist;
+  String arrived = "Congratulations! You reached Mars!";
+  String hit = "You got hit by a meteorite!";
+  String noFuel = "You ran out of fuel!";
   String text;
   
   Score() {
@@ -13,39 +14,49 @@ class Score {
   void render() {
     pushStyle();
     fill(255);
+    textFont(font);
     textAlign(CENTER);
     textSize(20);
-    text(points, width/2, 75);
+    text("distance to Mars", 100, 400);
+    text(int(dist + spaceShuttle.radius), 100, 420);
     popStyle();
+    fill(200,0,100);
+    rect(10, 430, 150*((4*width - (spaceShuttle.x - spaceShuttle.radius) -dist)/(4*width - (spaceShuttle.x - spaceShuttle.radius))), 5);
+    image(marsIcon, 160, 425);
   }
   
   void incrementPoints() {
     points ++;
   }
   
+  void checkDistance(Shuttle shuttle, Mars mars) {
+    dist = floor(mars.x - (shuttle.x + shuttle.radius));
+  }
+  
   void finalSay() {
     pushStyle();
+    textFont(font);
     fill(0, 230);
     rect(25, 25, width - 50, height - 50);
-    fill(255);
+    fill(255, 255, 255);
     textAlign(CENTER);
-    textSize(20);
-    if (planetMars.stillNotThere() == false) {
-      text("You made it to Mars! Incredible!", width/2, height/2 - 120);
-    }
-    text(congratulate() + " Here is your score:", width/2, height/2 - 70);
     textSize(30);
-    text(points, width/2, height/2 - 10);
+    if (planetMars.stillNotThere() == true) {
+      text("Game Over!", width/2, height/2 - 70);
+    } else {
+      text("You Won!", width/2, height/2 - 70);
+    }
+    text(congratulate(), width/2, height/2 - 10);
     popStyle();
   }
   
   String congratulate() {
-    if (points < 20) {
-      text = bad;
-    } else if (points < 50) {
-      text = good;
+    if (planetMars.stillNotThere() == false) {
+      text = arrived;
+    } else if (fuelMeter.fuelDepleted() == true) {
+      text = noFuel;
     } else {
-      text = great;
+      text = hit;
     }
     return text;
   }
